@@ -6,6 +6,7 @@ from datetime import datetime
 from pluginbase import PluginBase
 from . import utils
 
+import copy
 import logging
 import os
 import ssl
@@ -99,7 +100,7 @@ def main():
                 "notify_when_expiring_in": args.notify_when_expiring_in,
             }
 
-        site = Site(s, {**defaults, **s_config})
+        site = Site(s, utils.deep_merge(copy.deepcopy(defaults), s_config))
 
         # start to process the site
 

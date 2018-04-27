@@ -15,8 +15,7 @@ def env_is_debug():
     return truth
 
 def config_file():
-    '''
-        Return a path to the configuration file.
+    '''Return a path to the configuration file.
     '''
 
     for i in [ "./certs.yaml",
@@ -26,6 +25,27 @@ def config_file():
             return i
     else:
         return "/etc/check_certs/certs.yaml"
+
+def deep_merge(a, b, level=0):
+    '''Recursively merge 2 dicts a and b, go as deep as 9 levels.
+    '''
+
+    if level >= 9:
+        return b
+    else:
+        level += 1
+
+    # If neither a nor b is dict, no need to check further.
+    if not isinstance(a, dict): return b
+    if not isinstance(b, dict): return b
+
+    for key in b:
+        if key in a :
+            a[key] = deep_merge(a[key], b[key])
+        else:
+            a[key] = b[key]
+
+    return a
 
 import argparse
 def get_args():
