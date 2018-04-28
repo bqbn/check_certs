@@ -17,6 +17,7 @@ defaults:
       # Don't forget the hash tag.
       channel: "#check_certs"
       nick: check_certs
+      use_tls: True
 
 sites:
   # For site1, notification is sent when its TLS cert is expiring in
