@@ -19,7 +19,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='check_certs',
-    version='0.1.1',
+    version='0.1.2',
     description='''Check TLS certificates of sites for their expiration
                    dates. Send notifications if configured to do so.''',
 
@@ -46,6 +46,7 @@ setup(
         'boto3',
         'botocore',
         'cryptography',
+        'pluginbase',
         'PyYAML',
     ],
 
