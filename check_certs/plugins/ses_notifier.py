@@ -12,8 +12,7 @@ class SesNotifier:
         # If your account is still in the sandbox, this address must be verified.
         self.recipient = params.get("recipient", "")
 
-        # If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
-        self.aws_region = "us-west-2"
+        self.aws_region = params.get("aws_region", "us-west-2")
 
         # The character encoding for the email.
         self.charset = "UTF-8"
