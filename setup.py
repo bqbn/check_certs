@@ -19,7 +19,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='check_certs',
-    version='0.1.3',
+    version='0.1.4',
     description='''Check TLS certificates of sites for their expiration
                    dates. Send notifications if configured to do so.''',
 
@@ -50,8 +50,12 @@ setup(
         'PyYAML',
     ],
 
+    # Additional groups of dependencies. They can be install by using
+    # the "extras" syntax, for example:
+    #
+    #   $ pip install <module-name>[dev]
     extras_require={
-        'dev': [],
+        'dev': ['wheel', 'twine'],
         'test': [],
     },
 
