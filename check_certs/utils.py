@@ -48,7 +48,7 @@ def deep_merge(a, b, level=0):
     return a
 
 import argparse
-def get_args():
+def get_args(args=[]):
     parser = argparse.ArgumentParser(
         description='''Check TLS certificates of sites for their expiration
                     dates. Send notifications if configured to do so.'''
@@ -80,4 +80,4 @@ def get_args():
         help="a space-separated list of sites in either <fqdn> or <fqdn:port> format",
     )
 
-    return parser.parse_args()
+    return parser.parse_args(args)

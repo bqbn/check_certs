@@ -10,6 +10,7 @@ import copy
 import logging
 import os
 import ssl
+import sys
 import yaml
 
 class Site:
@@ -75,7 +76,7 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    args = utils.get_args()
+    args = utils.get_args(sys.argv[1:])
 
     logging.debug(args)
 
