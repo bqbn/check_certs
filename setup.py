@@ -50,8 +50,12 @@ setup(
         'PyYAML',
     ],
 
+    # Additional groups of dependencies. They can be install by using
+    # the "extras" syntax, for example:
+    #
+    #   $ pip install <module-name>[dev]
     extras_require={
-        'dev': [],
+        'dev': ['wheel', 'twine'],
         'test': [],
     },
 
