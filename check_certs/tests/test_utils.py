@@ -1,8 +1,8 @@
 
 import argparse
 import unittest
-from utils import deep_merge
-from utils import get_args
+from check_certs.utils import deep_merge
+from check_certs.utils import get_args
 
 class TestDeepMerge(unittest.TestCase):
     def test_deep_merge(self):
