@@ -16,25 +16,34 @@ import yaml
 class Site:
     def __init__(self, site, config):
 
+        # self.port is set to the port in fqdn string first, then
+        # config["port"], then defaults to 443.
         self.fqdn, *port = site.split(":")
-        self.port = port[0] if port else 443
+        self.port = port[0] if port else config.get("port", None)
+        self.port = self.port if self.port else 443
 
         self.notifiers = []
-        self.notify_when_expiring_in = config["notify_when_expiring_in"]
+        self.notify_when_expiring_in = config.get(
+            "notify_when_expiring_in", 35
+        )
 
-        # Used to keep a reference to the plugin, otherwise it is removed
-        # and imports in the plugin modules fail.
+        # The set is used to keep a reference to the plugin, otherwise
+        # it is removed and imports in the plugin modules fail.
         self.plugin_source = set()
-        for name, params in config["notifiers"].items():
+
+        notifiers = config.get("notifiers", {})
+        for name, params in notifiers.items():
             self._load_notifier(name, params)
 
-        # Do this to support sites that use SNI feature, ssl.get_server_certificate(...)
-        # doesn't support that.
+        # Do this to support sites that use SNI feature becasue
+        # ssl.get_server_certificate(...) doesn't support SNI.
         sock = ssl.SSLContext().wrap_socket(
             ssl.create_connection((self.fqdn, self.port)),
             server_hostname=self.fqdn
         )
         pem_data = ssl.DER_cert_to_PEM_cert(sock.getpeercert(binary_form=True))
+        sock.close()
+
         self.cert = x509.load_pem_x509_certificate(
             pem_data.encode("utf-8"),
             default_backend()
