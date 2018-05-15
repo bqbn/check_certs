@@ -19,6 +19,9 @@ class TestSite(unittest.TestCase):
         # ssl.create_connection(...) will try to make a connection to it
         # and it may fail if the port is not 443.
 
+        # TODO:
+        # mock ssl.create_connection(...) and test
+
     def test_register_notifier(self):
 
         site = Site("www.google.com", {})

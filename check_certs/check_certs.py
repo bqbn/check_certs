@@ -9,6 +9,7 @@ from . import utils
 import copy
 import logging
 import os
+import socket
 import ssl
 import sys
 import yaml
@@ -37,10 +38,16 @@ class Site:
 
         # Do this to support sites that use SNI feature becasue
         # ssl.get_server_certificate(...) doesn't support SNI.
-        sock = ssl.SSLContext().wrap_socket(
-            ssl.create_connection((self.fqdn, self.port)),
-            server_hostname=self.fqdn
-        )
+        try:
+            sock = ssl.SSLContext().wrap_socket(
+                ssl.create_connection((self.fqdn, self.port), 10),
+                server_hostname=self.fqdn
+            )
+        except socket.timeout as e:
+            self.cert = None
+            logging.warn(e)
+            return self.cert
+
         pem_data = ssl.DER_cert_to_PEM_cert(sock.getpeercert(binary_form=True))
         sock.close()
 
@@ -64,7 +71,7 @@ class Site:
         plugin.setup(self, params)
 
     def register_notifier(self, notifier):
-        self.notifiers.append(notifier) 
+        self.notifiers.append(notifier)
 
     @property
     def expires_in_days(self):
@@ -111,6 +118,12 @@ def main():
             }
 
         site = Site(s, utils.deep_merge(copy.deepcopy(defaults), s_config))
+
+        # site.cert should not be None
+
+        if not site.cert:
+            logging.warn("%s: unable to obtain its cert" % (s))
+            continue
 
         # start to process the site
 
