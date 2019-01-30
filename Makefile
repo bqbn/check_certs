@@ -4,7 +4,7 @@ build: clean
 clean:
 	rm -rf build/ dist/
 
-publish:
+publish: build
 	twine upload dist/*
 
 tests:
