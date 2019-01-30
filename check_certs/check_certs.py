@@ -47,6 +47,10 @@ class Site:
             self.cert = None
             logging.warn(e)
             return self.cert
+        except socket.gaierror as e:
+            self.cert = None
+            logging.warn(e)
+            return self.cert
 
         pem_data = ssl.DER_cert_to_PEM_cert(sock.getpeercert(binary_form=True))
         sock.close()
