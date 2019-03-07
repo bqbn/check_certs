@@ -2,7 +2,9 @@ build: clean
 	python setup.py bdist_wheel
 
 clean:
-	rm -rf build/ dist/
+	rm -rf build/
+	rm -rf check_certs.egg-info/
+	rm -rf dist/
 
 publish: build
 	twine upload dist/*
