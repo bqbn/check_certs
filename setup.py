@@ -22,14 +22,11 @@ setup(
     version='0.1.6',
     description='''Check TLS certificates of sites for their expiration
                    dates. Send notifications if configured to do so.''',
-
     long_description=long_description,
     long_description_content_type='text/markdown',
-
     url='https://github.com/bqbn/check_certs',
     author='bqbn',
     author_email='bqbn@openken.com',
-
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -37,11 +34,8 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'Programming Language :: Python :: 3 :: Only',
     ],
-
     keywords='ssl tls tools development devops',
-
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-
     install_requires=[
         'boto3',
         'botocore',
@@ -55,19 +49,16 @@ setup(
     #
     #   $ pip install <module-name>[dev]
     extras_require={
-        'dev': ['wheel', 'twine'],
+        'dev': ['wheel', 'twine', 'yapf'],
         'test': [],
     },
-
     entry_points={
         'console_scripts': [
             'check_certs=check_certs.check_certs:main',
         ],
     },
-
     project_urls={
         'Bug Reports': 'https://github.com/bqbn/check_certs/issues',
         'Source': 'https://github.com/bqbn/check_certs',
     },
 )
-

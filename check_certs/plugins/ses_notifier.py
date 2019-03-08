@@ -4,6 +4,7 @@ from botocore.exceptions import ClientError
 import boto3
 import logging
 
+
 class SesNotifier:
     def __init__(self, params):
         # This address must be verified with Amazon SES.
@@ -17,7 +18,7 @@ class SesNotifier:
         # The character encoding for the email.
         self.charset = "UTF-8"
         # Create a new SES resource and specify a region.
-        self.client = boto3.client('ses',region_name=self.aws_region)
+        self.client = boto3.client('ses', region_name=self.aws_region)
 
     def send(self, info):
         # The subject line for the email.
@@ -55,12 +56,14 @@ class SesNotifier:
                 },
                 Source=self.sender,
             )
-        # Display an error if something goes wrong.	
+        # Display an error if something goes wrong.
         except ClientError as e:
             logging.error(e.response['Error']['Message'])
             raise e
         else:
-            logging.info("Email sent! Message ID: %s" % response['ResponseMetadata']['RequestId'])
+            logging.info("Email sent! Message ID: %s" %
+                         response['ResponseMetadata']['RequestId'])
+
 
 def setup(app, params):
     app.register_notifier(SesNotifier(params))

@@ -6,14 +6,14 @@ import socket
 import ssl
 import time
 
-class IrcNotifier:
 
+class IrcNotifier:
     def __init__(self, params):
-        self.server     = params.get("server", "")
-        self.port       = params.get("port", "")
-        self.use_tls    = params.get("use_tls", True)
-        self.channel    = params.get("channel", "")
-        self.nick       = params.get("nick", "")
+        self.server = params.get("server", "")
+        self.port = params.get("port", "")
+        self.use_tls = params.get("use_tls", True)
+        self.channel = params.get("channel", "")
+        self.nick = params.get("nick", "")
 
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if self.use_tls:
@@ -43,7 +43,7 @@ class IrcNotifier:
         msg = "NICK %s\n" % self.nick
         self.client.send(msg.encode("utf-8"))
 
-        msg = "USER %s 0 * :check_certs bot\n" % (self.nick,)
+        msg = "USER %s 0 * :check_certs bot\n" % (self.nick, )
         self.client.send(msg.encode("utf-8"))
 
         self._wait_for_welcome()
@@ -64,6 +64,7 @@ class IrcNotifier:
         time.sleep(1)
 
         self.client.close()
+
 
 def setup(app, params):
     app.register_notifier(IrcNotifier(params))

@@ -1,6 +1,6 @@
-
 import unittest
 from check_certs.check_certs import Site
+
 
 class TestSite(unittest.TestCase):
     def test_init(self):

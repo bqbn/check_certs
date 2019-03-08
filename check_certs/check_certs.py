@@ -14,6 +14,7 @@ import ssl
 import sys
 import yaml
 
+
 class Site:
     def __init__(self, site, config):
 
@@ -24,9 +25,8 @@ class Site:
         self.port = self.port if self.port else 443
 
         self.notifiers = []
-        self.notify_when_expiring_in = config.get(
-            "notify_when_expiring_in", 35
-        )
+        self.notify_when_expiring_in = config.get("notify_when_expiring_in",
+                                                  35)
 
         # The set is used to keep a reference to the plugin, otherwise
         # it is removed and imports in the plugin modules fail.
@@ -41,8 +41,7 @@ class Site:
         try:
             sock = ssl.SSLContext().wrap_socket(
                 ssl.create_connection((self.fqdn, self.port), 10),
-                server_hostname=self.fqdn
-            )
+                server_hostname=self.fqdn)
         except socket.timeout as e:
             self.cert = None
             logging.warn(e)
@@ -56,18 +55,13 @@ class Site:
         sock.close()
 
         self.cert = x509.load_pem_x509_certificate(
-            pem_data.encode("utf-8"),
-            default_backend()
-        )
+            pem_data.encode("utf-8"), default_backend())
 
     def _load_notifier(self, name, params={}):
 
         plugin_base = PluginBase(package="check_certs.plugins")
         plugin_source = plugin_base.make_plugin_source(
-            searchpath=[
-                os.path.join(os.path.dirname(__file__), "./plugins")
-            ]
-        )
+            searchpath=[os.path.join(os.path.dirname(__file__), "./plugins")])
         # keep a reference to the plugin
         self.plugin_source.add(plugin_source)
         plugin = plugin_source.load_plugin(name + "_notifier")
@@ -88,6 +82,7 @@ class Site:
                 "not_valid_after": self.cert.not_valid_after,
                 "expires_in_days": self.expires_in_days
             })
+
 
 def main():
 
@@ -133,8 +128,7 @@ def main():
 
         if hasattr(args, "show") and args.show:
             logging.info("%s expires on %s, and in %d days" %
-                (s, site.cert.not_valid_after, site.expires_in_days)
-            )
+                         (s, site.cert.not_valid_after, site.expires_in_days))
             continue
 
         if site.expires_in_days <= site.notify_when_expiring_in:
@@ -144,6 +138,7 @@ def main():
 
     for s in sites_to_expire:
         s.send_reminder()
+
 
 if __name__ == "__main__":
     main()
