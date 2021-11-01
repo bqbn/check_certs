@@ -4,6 +4,7 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from datetime import datetime
 from pluginbase import PluginBase
+from yaml import CLoader as Loader
 from . import utils
 
 import copy
@@ -96,7 +97,7 @@ def main():
     logging.debug(args)
 
     with open(utils.config_file(), "r") as stream:
-        config = yaml.load(stream)
+        config = yaml.load(stream, Loader)
 
     defaults = config["defaults"]
 
