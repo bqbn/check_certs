@@ -4,7 +4,6 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from datetime import datetime
 from pluginbase import PluginBase
-from yaml import CLoader as Loader
 from . import utils
 
 import copy
@@ -15,6 +14,12 @@ import ssl
 import sys
 import yaml
 
+try:
+    from yaml import CLoader as Loader
+except ImportError as e:
+    logging.warn(e)
+    logging.warn(f"Loading the non C backed \"Loader\" instead...")
+    from yaml import Loader
 
 class Site:
     def __init__(self, site, config):
